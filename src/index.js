@@ -15,7 +15,7 @@ function main() {
 
   // adding light
   const light = new THREE.DirectionalLight(0xffffff, 1);
-  light.position.set(30, 30, 50);
+  light.position.set(30, 30, 20);
   scene.add(light);
 
   const loader = new THREE.TextureLoader();
@@ -36,7 +36,8 @@ function main() {
   const sunGeometry = new THREE.SphereBufferGeometry(4, 24, 24);
   const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xebcc34 });
   const sun = new THREE.Mesh(sunGeometry, sunMaterial);
-  sun.position.set(50, 30, -20);
+  sun.position.set(120, 80, -800);
+  sun.scale.set(5,5,5);
   sun.rotation.set(20, 20, 0);
   scene.add(sun);
 
