@@ -80,17 +80,23 @@ function main() {
     const roomGeomtry = new THREE.CylinderBufferGeometry(8,8,10);
     const roomMaterial = new THREE.MeshPhongMaterial({color: roomColor});
     const roomMesh = new THREE.Mesh(roomGeomtry, roomMaterial);
+    const doorGeometry = new THREE.PlaneBufferGeometry(5,8,20);
+    const door = new THREE.Mesh(doorGeometry, roofMaterial);
+    door.position.set(0,-10,8.5);
     roomMesh.position.set(0, -10,0);
     const house = new THREE.Object3D();
     house.add(roofMesh);
     house.add(roomMesh);
+    house.add(door);
     house.position.set(posx,posy,posz);
     return house;
   }
   const house1 = makeHouse(30,10,0, 0x3262a8, 0xff0000);
-  const house2 = makeHouse(20, 10, -20, 0xff577f, 0xd89216)
+  const house2 = makeHouse(20, 10, -20, 0xdb6400, 0xf05454);
+  const house3 = makeHouse(50, 10, -30, 0xff577f, 0x111d5e);
   houses.add(house1);
   houses.add(house2);
+  houses.add(house3);
   scene.add(houses);
 
   function resizeRendererToDisplaySize(renderer) {
@@ -107,7 +113,7 @@ function main() {
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
 
   function render(time) {
-    //time *= 0.001;
+    // time *= 0.0001;
 
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
@@ -115,7 +121,7 @@ function main() {
     camera.updateProjectionMatrix();
   }
   controls.update();
-
+  // houses.position.x += time;
   renderer.render(scene, camera);
 
     requestAnimationFrame(render);
