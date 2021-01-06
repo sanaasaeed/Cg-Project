@@ -6,7 +6,7 @@ function main() {
   const fov = 30;
   const aspect = 2;
   const near = 0.1;
-  const far = 2000;
+  const far = 1000;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 20, 150);
 
@@ -139,6 +139,53 @@ function main() {
   roadMesh.rotateX(-Math.PI / 2);
   ground.add(roadMesh);
 
+    var car = new THREE.Object3D();
+    const carBodyGeometry = new THREE.BoxGeometry(10, 5, 20);
+    const carBodyMaterial = new THREE.MeshBasicMaterial({ color: 0xFFAA00 });
+    const carBody = new THREE.Mesh(carBodyGeometry, carBodyMaterial);
+    carBody.position.y = -5;
+    car.add(carBody)
+
+    const carHoodGeometry = new THREE.BoxGeometry(10, 4, 15);
+    const carHoodMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD279 });
+    const carHood = new THREE.Mesh(carHoodGeometry, carHoodMaterial);
+
+    carHood.position.y = -1;
+    car.add(carHood);
+
+    carTyerGeometry1 = new THREE.SphereBufferGeometry(2, 8, 8);
+    carTyerMaterial1 = new THREE.MeshBasicMaterial({ color: 0x000000 });
+    carTyer1 = new THREE.Mesh(carTyerGeometry1, carTyerMaterial1);
+    carTyer1.position.set(-5, -7, 6);
+    car.add(carTyer1);
+
+    carTyer2 = new THREE.Mesh(carTyerGeometry1, carTyerMaterial1);
+    carTyer2.position.set(-5, -7, -6);
+    car.add(carTyer2);
+
+    carTyer3 = new THREE.Mesh(carTyerGeometry1, carTyerMaterial1);
+    carTyer3.position.set(5, -7, -6);
+    car.add(carTyer3);
+
+    carTyer4 = new THREE.Mesh(carTyerGeometry1, carTyerMaterial1);
+    carTyer4.position.set(5, -7, 6);
+    car.add(carTyer4);
+
+    carBackBumperGeometry = new THREE.BoxGeometry(8, 1.5, 1);
+    carBackBumperMaterial = new THREE.MeshBasicMaterial({ color: 0xF72626 });
+    carBackBumper = new THREE.Mesh(carBackBumperGeometry, carBackBumperMaterial);
+
+    carBackBumper.position.set(0, -6, 10);
+    car.add(carBackBumper);
+
+
+    carFrontBumperGeometry = new THREE.BoxGeometry(8, 1.5, 1);
+    carFrontBumperMaterial = new THREE.MeshBasicMaterial({ color: 0xF72626 });
+    carFrontBumper = new THREE.Mesh(carFrontBumperGeometry, carFrontBumperMaterial);
+
+  carFrontBumper.position.set(0, -6, -10);
+  car.add(carFrontBumper);
+  scene.add(car);
   // 
 
   function resizeRendererToDisplaySize(renderer) {
@@ -154,8 +201,16 @@ function main() {
 
   const controls = new THREE.OrbitControls( camera, renderer.domElement );
 
-  function render(time) {
-    // time *= 0.0001;
+  const cars =[];
+  cars.push(car);
+  setInterval(function(){
+    var newCar = car.clone();
+    newCar.position.set(0,0,80);
+    scene.add(newCar);
+    cars.push(newCar);
+   }, 2000);
+  function render() {
+     const speed = 2;
 
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
@@ -163,13 +218,27 @@ function main() {
     camera.updateProjectionMatrix();
   }
   controls.update();
-  // houses.position.x += time;
+  // if (car.position.z <= -1000) {
+  //   car.position.z = 150;
+  // }
+   cars.forEach(car => {
+    car.position.z -= speed;
+    if(car.position.z <= -1000){
+      scene.remove(car);
+    }
+   });
+
+  
+  //newCar.position.z -= speed;
+  console.log(scene);
   renderer.render(scene, camera);
 
     requestAnimationFrame(render);
   }
 
   requestAnimationFrame(render);
+
 }
+
 
 main();
