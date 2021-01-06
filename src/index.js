@@ -25,7 +25,7 @@ function main() {
     map: loader.load("src/grass.jpg", function ( texture ) {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
       texture.offset.set( 0, 0 );
-      texture.repeat.set( 40, 40 );
+      texture.repeat.set( 80, 80 );
   })
 });
   const ground = new THREE.Mesh(groundGeomtry, material);
@@ -115,6 +115,8 @@ function main() {
   roadMesh.position.set(0, 400, 0);
   roadMesh.rotateX(-Math.PI / 2);
   ground.add(roadMesh);
+
+  // 
 
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
