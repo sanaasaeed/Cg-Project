@@ -22,9 +22,12 @@ function main() {
 
   const groundGeomtry = new THREE.PlaneBufferGeometry(2000, 2000, 42);
   const material = new THREE.MeshBasicMaterial({
-    color: 0x00a318
-    // map: loader.load("grass.jpg")
-  });
+    map: loader.load("src/grass.jpg", function ( texture ) {
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.offset.set( 0, 0 );
+      texture.repeat.set( 40, 40 );
+  })
+});
   const ground = new THREE.Mesh(groundGeomtry, material);
   ground.rotateX(-Math.PI / 2);
   ground.position.set(0, -10, 0);
@@ -98,6 +101,20 @@ function main() {
   houses.add(house2);
   houses.add(house3);
   scene.add(houses);
+
+  // road
+  const roadGeometry = new THREE.BoxBufferGeometry(20, 1, 1100);
+  const roadMaterial = new THREE.MeshBasicMaterial({
+    map: loader.load("src/roads.jpg", function ( texture ) {
+      texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+      texture.offset.set( 0, 0 );
+      texture.repeat.set(100, 100 );
+  })
+});
+  const roadMesh = new THREE.Mesh(roadGeometry, roadMaterial);
+  roadMesh.position.set(0, 400, 0);
+  roadMesh.rotateX(-Math.PI / 2);
+  ground.add(roadMesh);
 
   function resizeRendererToDisplaySize(renderer) {
     const canvas = renderer.domElement;
