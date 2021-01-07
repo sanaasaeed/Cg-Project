@@ -22,7 +22,7 @@ function main() {
 
   const groundGeomtry = new THREE.PlaneBufferGeometry(2000, 2000, 42);
   const material = new THREE.MeshBasicMaterial({
-    map: loader.load("src/grass.jpg", function ( texture ) {
+    map: loader.load("src/img/grass.jpg", function ( texture ) {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
       texture.offset.set( 0, 0 );
       texture.repeat.set( 80, 80 );
@@ -129,7 +129,7 @@ function main() {
   // road
   const roadGeometry = new THREE.BoxBufferGeometry(30, 1, 1100);
   const roadMaterial = new THREE.MeshBasicMaterial({
-    map: loader.load("src/roads.jpg", function ( texture ) {
+    map: loader.load("src/img/roads.jpg", function ( texture ) {
       texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
       texture.offset.set( 0, 0 );
       texture.repeat.set(100, 100 );
@@ -139,6 +139,19 @@ function main() {
   roadMesh.position.set(0, 400, 0);
   roadMesh.rotateX(-Math.PI / 2);
   ground.add(roadMesh);
+
+  function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '0x';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  
+  function setRandomColor() {
+    $("#colorpad").css("background-color", getRandomColor());
+  }
 
     var car = new THREE.Object3D();
     const carBodyGeometry = new THREE.BoxGeometry(10, 5, 20);
@@ -228,9 +241,6 @@ function main() {
       scene.remove(car);
     }
    });
-
-  
-  //newCar.position.z -= speed;
   console.log(scene);
   renderer.render(scene, camera);
 
