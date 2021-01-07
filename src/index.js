@@ -6,7 +6,7 @@ function main() {
   const fov = 30;
   const aspect = 2;
   const near = 0.1;
-  const far = 1000;
+  const far = 2000;
   const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
   camera.position.set(0, 20, 150);
 
@@ -125,7 +125,6 @@ function main() {
   housesSet2.add(house6);
   scene.add(housesSet1);
   scene.add(housesSet2);
-
   // road
   const roadGeometry = new THREE.BoxBufferGeometry(30, 1, 1100);
   const roadMaterial = new THREE.MeshBasicMaterial({
@@ -140,18 +139,28 @@ function main() {
   roadMesh.rotateX(-Math.PI / 2);
   ground.add(roadMesh);
 
-  function getRandomColor() {
-    var letters = '0123456789ABCDEF';
-    var color = '0x';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
+  function randomPos(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
   }
-  
-  function setRandomColor() {
-    $("#colorpad").css("background-color", getRandomColor());
+  // balloons
+  const balloons = new THREE.Object3D();
+  const balloonsList = [];
+  const colors =[0xf54281, 0xf50000, 0x0045f5, 0xe0bb00, 0x58006e, 0x00945e, 0x4a02d9, 0xff7b00, 0x00ff6a];
+  function makeBalloons(posx, posy, posz, color){
+    const balloonGeometry = new THREE.SphereBufferGeometry(10, 12,12);
+    const balloonMaterial = new THREE.MeshPhongMaterial({color: color});
+    const balloon = new THREE.Mesh(balloonGeometry, balloonMaterial);
+    balloon.position.set(posx, posy, posz)
+    return balloon;
   }
+  for (let i = 0; i < 3; i++) {
+    const balloon = makeBalloons(randomPos(-800, 800), randomPos(-60, 0), -1600, colors[randomPos(0, colors.length)]);
+    balloons.add(balloon);
+    balloonsList.push(balloon);
+  } 
+  scene.add(balloons);
+
+
 
     var car = new THREE.Object3D();
     const carBodyGeometry = new THREE.BoxGeometry(10, 5, 20);
@@ -217,14 +226,24 @@ function main() {
 
   const cars =[];
   cars.push(car);
+
   setInterval(function(){
     var newCar = car.clone();
     newCar.position.set(0,0,80);
     scene.add(newCar);
     cars.push(newCar);
    }, 2000);
+
+   setInterval(function(){
+    for (let i = 0; i < 3; i++) {
+      const balloon = makeBalloons(randomPos(-800, 800), randomPos(-90, 0), -1600, colors[randomPos(0, colors.length)]);
+      balloons.add(balloon);
+      balloonsList.push(balloon);
+    } 
+   }, 4000);
   function render() {
      const speed = 2;
+     const balloonspeed = 0.8;
 
   if (resizeRendererToDisplaySize(renderer)) {
     const canvas = renderer.domElement;
@@ -241,7 +260,13 @@ function main() {
       scene.remove(car);
     }
    });
-  console.log(scene);
+
+   balloonsList.forEach(balloon => {
+     balloon.position.y += balloonspeed;
+     if(balloon.position.y > 280){
+       balloons.remove(balloon);
+     }
+   })
   renderer.render(scene, camera);
 
     requestAnimationFrame(render);
