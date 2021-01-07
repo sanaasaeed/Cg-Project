@@ -47,6 +47,13 @@ function main() {
 
   const treesSet2 = new THREE.Object3D();
   treesSet2.position.set(80, 0, -80);
+
+  const treesSet3 = new THREE.Object3D();
+  treesSet3.position.set(80, 0, -570);
+
+  const treesSet4 = new THREE.Object3D();
+  treesSet4.position.set(-80, 0, -400);
+
   function makeTree(posx, posy, posz){
     const treeGeometry = new THREE.ConeBufferGeometry(8, 12);
     const treeMaterial = new THREE.MeshPhongMaterial({ color: 0x295939 });
@@ -78,20 +85,37 @@ function main() {
   treesSet2.add(tree6);
   treesSet2.add(tree7);
   treesSet2.add(tree8);
+  treesSet3.add(makeTree(-25,10,20));
+  treesSet3.add(makeTree(-20,10,0));
+  treesSet3.add(makeTree(-45, 10, -10));
+  treesSet3.add(makeTree(-15, 10, -40));
+  treesSet4.add(makeTree(-25,10,20));
+  treesSet4.add(makeTree(-20,10,0));
+  treesSet4.add(makeTree(-45, 10, -10));
+  treesSet4.add(makeTree(-15, 10, -40));
   trees.add(treesSet1);
   trees.add(treesSet2);
+  trees.add(treesSet3);
+  trees.add(treesSet4);
   scene.add(trees);
 
   const pointLight = new THREE.PointLight(0xffffff, 1);
   pointLight.position.set(50,20,10);
   scene.add(pointLight);
 
-  //road
+  //houses
+  const houses = new THREE.Object3D();
   const housesSet1 = new THREE.Object3D();
   housesSet1.position.set(20,0,0);
 
   const housesSet2 = new THREE.Object3D();
   housesSet2.position.set(-80, -0, -150);
+
+  const housesSet3 = new THREE.Object3D();
+  housesSet3.position.set(40, -0, -450);
+
+  const housesSet4 = new THREE.Object3D();
+  housesSet4.position.set(-90, -0, -400);
 
   function makeHouse(posx, posy, posz, roofColor, roomColor){
     const roofGeometry = new THREE.ConeBufferGeometry(10,12,20);
@@ -123,8 +147,17 @@ function main() {
   housesSet2.add(house4);
   housesSet2.add(house5);
   housesSet2.add(house6);
-  scene.add(housesSet1);
-  scene.add(housesSet2);
+  housesSet3.add(makeHouse(30,10,0, 0x3262a8, 0xff0000));
+  housesSet3.add(makeHouse(20, 10, -20, 0xdb6400, 0xf05454));
+  housesSet3.add(makeHouse(50, 10, -30, 0xff577f, 0x111d5e))
+  housesSet4.add(makeHouse(30,10,0, 0x3262a8, 0xff0000));
+  housesSet4.add(makeHouse(20, 10, -20, 0xdb6400, 0xf05454));
+  housesSet4.add(makeHouse(50, 10, -30, 0xff577f, 0x111d5e))
+  houses.add(housesSet1);
+  houses.add(housesSet2);
+  houses.add(housesSet3);
+  houses.add(housesSet4);
+  scene.add(houses)
   // road
   const roadGeometry = new THREE.BoxBufferGeometry(30, 1, 1100);
   const roadMaterial = new THREE.MeshBasicMaterial({
